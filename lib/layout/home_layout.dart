@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/modules/archived_tasks/archived_tasks_screen.dart';
+import 'package:todo_app_flutter/modules/done_tasks/done_tasks_screen.dart';
+import 'package:todo_app_flutter/modules/tasks/new_tasks_screen.dart';
 
 class HomeLayout extends StatefulWidget {
   @override
@@ -8,12 +11,19 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> {
   int currentIndex = 0;
 
+  List<Widget> screens = [
+    NewTasksScreen(),
+    DoneTasksScreen(),
+    ArchivedTasksScreen()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Todo App"),
       ),
+      body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.add),
@@ -21,7 +31,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             currentIndex = index;
           });
@@ -30,9 +40,12 @@ class _HomeLayoutState extends State<HomeLayout> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Tasks'),
           BottomNavigationBarItem(icon: Icon(Icons.done_all), label: 'Done'),
-          BottomNavigationBarItem(icon: Icon(Icons.archive_outlined), label: 'Archive'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.archive_outlined), label: 'Archive'),
         ],
       ),
     );
   }
+
+
 }
