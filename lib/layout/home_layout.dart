@@ -1,11 +1,12 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo_app_flutter/modules/archived_tasks/archived_tasks_screen.dart';
 import 'package:todo_app_flutter/modules/done_tasks/done_tasks_screen.dart';
 import 'package:todo_app_flutter/modules/tasks/new_tasks_screen.dart';
-
 import '../shared/components/components.dart';
+import '../shared/components/constants.dart';
 
 class HomeLayout extends StatefulWidget {
   @override
@@ -27,6 +28,8 @@ class _HomeLayoutState extends State<HomeLayout> {
   var timeController = TextEditingController();
   var dateController = TextEditingController();
 
+
+
   List<Widget> screens = [
     NewTasksScreen(),
     DoneTasksScreen(),
@@ -45,7 +48,11 @@ class _HomeLayoutState extends State<HomeLayout> {
       appBar: AppBar(
         title: Text("Todo App"),
       ),
-      body: screens[currentIndex],
+      body: ConditionalBuilder(
+        condition: tasks.isNotEmpty,
+        builder: (context) => screens[currentIndex],
+        fallback: (context) => Center(child: CircularProgressIndicator(),),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (isBottomSheetOpen) {
@@ -195,6 +202,13 @@ class _HomeLayoutState extends State<HomeLayout> {
         print("Error while creating the database: $error");
       }));
     }, onOpen: (database) {
+      getDataFromDatabase(database).then((value) {
+        setState(() {
+          tasks.addAll(value);
+          print(tasks.toString());
+          print("value: ${value.length} || tasks: ${tasks.length}");
+        });
+      });
       print("Database opened");
     });
   }
@@ -217,5 +231,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     });
   }
 
-  void getDataFromDatabase() {}
+  Future<List<Map>> getDataFromDatabase(Database database) async {
+    return await database.rawQuery('SELECT * FROM tasks');
+  }
 }
