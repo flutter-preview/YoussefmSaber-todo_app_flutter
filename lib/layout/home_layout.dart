@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:todo_app_flutter/modules/archived_tasks/archived_tasks_screen.dart';
 import 'package:todo_app_flutter/modules/done_tasks/done_tasks_screen.dart';
 import 'package:todo_app_flutter/modules/tasks/new_tasks_screen.dart';
+
 import '../shared/components/components.dart';
 import '../shared/components/constants.dart';
 
@@ -28,8 +29,6 @@ class _HomeLayoutState extends State<HomeLayout> {
   var timeController = TextEditingController();
   var dateController = TextEditingController();
 
-
-
   List<Widget> screens = [
     NewTasksScreen(),
     DoneTasksScreen(),
@@ -51,7 +50,9 @@ class _HomeLayoutState extends State<HomeLayout> {
       body: ConditionalBuilder(
         condition: tasks.isNotEmpty,
         builder: (context) => screens[currentIndex],
-        fallback: (context) => Center(child: CircularProgressIndicator(),),
+        fallback: (context) => Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -62,11 +63,16 @@ class _HomeLayoutState extends State<HomeLayout> {
                     time: timeController.text)
                 .then((value) {
               if (formKey.currentState?.validate() == true) {
-                setState(() {
-                  fabIcon = Icons.edit;
+                getDataFromDatabase(db).then((value) {
+                  Navigator.pop(context);
+                  setState(() {
+                    fabIcon = Icons.edit;
+                    isBottomSheetOpen = false;
+                    tasks = value;
+                    print(tasks.toString());
+                    print("value: ${value.length} || tasks: ${tasks.length}");
+                  });
                 });
-                Navigator.pop(context);
-                isBottomSheetOpen = false;
               }
             }).catchError((error) {
               print("Error adding the data to the database: error");
