@@ -194,10 +194,6 @@ class HomeLayout extends StatelessWidget {
             }));
   }
 
-  Future<String> getName() async {
-    return 'Pixelase';
-  }
-
   void createDatabase() async {
     db = await openDatabase('todo.db ', version: 1,
         onCreate: (database, version) {
