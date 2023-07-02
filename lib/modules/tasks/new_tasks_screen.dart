@@ -9,18 +9,18 @@ import '../cubit/states.dart';
 class NewTasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
-    // return BlocConsumer<AppCubit, AppStates>(
-    //   builder: (context, state) {
-    //     return ListView.separated(
-    //         itemBuilder: (context, index) => todoItem(tasks[index]),
-    //         separatorBuilder: (context, index) => Container(
-    //               height: 1,
-    //               color: Colors.grey[300],
-    //             ),
-    //         itemCount: tasks.length);
-    //   },
-    //   listener: (context, taskState) {},
-    // );
+    return BlocConsumer<AppCubit, AppStates>(
+      listener: (context, taskState) {},
+      builder: (context, state) {
+        var tasks = AppCubit.get(context).tasks;
+        return ListView.separated(
+            itemBuilder: (context, index) => todoItem(tasks[index]),
+            separatorBuilder: (context, index) => Container(
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+            itemCount: tasks.length);
+      },
+    );
   }
 }

@@ -80,6 +80,8 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   Future<List<Map>> getDataFromDatabase(Database database) async {
+    emit(AppGetFromDatabaseLoadingState());
+
     return await database.rawQuery('SELECT * FROM tasks');
   }
 
