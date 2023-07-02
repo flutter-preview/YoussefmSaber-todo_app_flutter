@@ -1,5 +1,9 @@
-abstract class TaskStates {}
+abstract class AppStates {}
 
-class TaskInitialState extends TaskStates {}
+class AppInitialState extends AppStates {}
 
-class TaskChangeState extends TaskStates {}
+class AppChangeBottomNavState extends AppStates{
+
+}
+
+class AppChangeState extends AppStates {}
