@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app_flutter/modules/cubit/cubit.dart';
-
 import '../../shared/components/components.dart';
-import '../../shared/components/constants.dart';
-import '../cubit/states.dart';
+import '../../shared/cubit/cubit.dart';
+import '../../shared/cubit/states.dart';
 
 class NewTasksScreen extends StatelessWidget {
   @override
@@ -12,9 +10,9 @@ class NewTasksScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, taskState) {},
       builder: (context, state) {
-        var tasks = AppCubit.get(context).tasks;
+        var tasks = AppCubit.get(context).newTasks;
         return ListView.separated(
-            itemBuilder: (context, index) => todoItem(tasks[index]),
+            itemBuilder: (context, index) => todoItem(tasks[index], context),
             separatorBuilder: (context, index) => Container(
                   height: 1,
                   color: Colors.grey[300],

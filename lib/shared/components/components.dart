@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../cubit/cubit.dart';
 
 Widget defaultFormField({
   required TextEditingController controller,
@@ -48,8 +49,8 @@ Widget defaultFormField({
       ),
     );
 
-Widget todoItem(Map task) => Container(
-  padding: EdgeInsets.all(16),
+Widget todoItem(Map task, context) => Container(
+      padding: EdgeInsets.all(16),
       child: Row(
         children: [
           CircleAvatar(
@@ -57,29 +58,49 @@ Widget todoItem(Map task) => Container(
             backgroundColor: Colors.lightGreen,
             child: Text(
               task['time'],
-              style: TextStyle(color: Colors.white,
-              fontSize: 13),
+              style: TextStyle(color: Colors.white, fontSize: 13),
             ),
           ),
-          SizedBox(width: 8,),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
+          SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   task['title'],
                   style: TextStyle(
                       color: Colors.black87,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500
-                  ),
-              ),
-              Text(
-                task['date'],
-                style: TextStyle(color: Colors.grey[400]),
-              ),
-            ],
-          )
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  task['date'],
+                  style: TextStyle(color: Colors.grey[400]),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          IconButton(
+              onPressed: () {
+                AppCubit.get(context).updateData(state: 'done', id: task['id']);
+              },
+              icon: Icon(
+                Icons.done_outline_rounded,
+                color: Colors.greenAccent,
+              )),
+          IconButton(
+              onPressed: () {AppCubit.get(context).updateData(state: 'archived', id: task['id']);
+              },
+              icon: Icon(
+                Icons.archive_rounded,
+                color: Colors.blueGrey,
+              ))
         ],
       ),
     );
