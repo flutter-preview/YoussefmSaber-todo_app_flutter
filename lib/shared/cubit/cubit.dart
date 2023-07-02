@@ -101,17 +101,23 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void changeBottomSheetState({required bool isShown, required IconData icon}) {
-    isBottomSheetOpen = isShown;
-    fabIcon = icon;
-    emit(AppChangeBottomNavState());
-  }
-
   void updateData({required String state, required int id}) {
     database.rawUpdate(
         'Update tasks SET state = ? Where id = ?', [state, id]).then((value) {
       getDataFromDatabase(database);
       emit(AppUpdateToDatabaseState());
     });
+  }
+
+  void deleteData({required int id}) {
+    database.rawDelete('Delete From tasks where id = ?', [id]);
+    getDataFromDatabase(database);
+    emit(AppDeleteFromDatabase());
+  }
+
+  void changeBottomSheetState({required bool isShown, required IconData icon}) {
+    isBottomSheetOpen = isShown;
+    fabIcon = icon;
+    emit(AppChangeBottomNavState());
   }
 }
